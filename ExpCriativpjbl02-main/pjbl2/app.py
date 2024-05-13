@@ -9,9 +9,6 @@ import models.sensor
 import models.actuator
 from actuator import actuator
 
-sensores = []
-atuadores = []
-
 app = Flask(__name__)
 
 app.register_blueprint(login, url_prefix='/')
@@ -57,7 +54,6 @@ def request_loader(request):
 
 temperatura = 0
 umidade = 0
-fumaca = 0
 alerta = ''
 
 # Configuração MQTT
@@ -70,7 +66,6 @@ app.config['MQTT_TLS_ENABLED'] = False
 # Definição dos tópicos
 MQTT_TOPIC_TEMPERATURE = "Temperatura.topic"
 MQTT_TOPIC_HUMIDITY = "Umidade.topic"
-MQTT_TOPIC_FUMACA = "Fumaca.topic"
 MQTT_TOPIC_SEND = "Receber.topic"
 
 mqtt_client = Mqtt()
@@ -82,12 +77,12 @@ def handle_connect(client, userdata, flags, rc):
   if rc == 0:
     mqtt_client.subscribe(MQTT_TOPIC_TEMPERATURE)
     mqtt_client.subscribe(MQTT_TOPIC_HUMIDITY)
-    mqtt_client.subscribe(MQTT_TOPIC_FUMACA)
+
     print("Conectado!")
 
 @mqtt_client.on_message()
 def handle_message(client, userdata, message):
-  global temperatura, umidade, alerta, fumaca
+  global temperatura, umidade, alerta
   topic = message.topic
   content = json.loads(message.payload.decode())
   if topic == MQTT_TOPIC_TEMPERATURE:
@@ -104,14 +99,6 @@ def handle_message(client, userdata, message):
       mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
     else:
       alerta = ""
-  if topic == MQTT_TOPIC_FUMACA:
-    fumaca = float(content)
-    if 0 < fumaca < 100:
-      alerta = "Nivel de Fumaça Baixo"
-    elif 100 < fumaca < 700:
-      alerta = "Nivel de Fumaça Médio"
-    else:
-      alerta = "Nivel de Fumaça Alto"
   else:
     alerta = ""
 
@@ -122,8 +109,8 @@ def handle_disconnect():
 # Função para a Central de Monitoramento     
 @app.route('/central')
 def central():
-  global temperatura, umidade, fumaca
-  return render_template("central.html", temperatura=temperatura, umidade=umidade, fumaca=fumaca)
+  global temperatura, umidade
+  return render_template("central.html", temperatura=temperatura, umidade=umidade)
 
 @app.route('/controle', methods=['GET', 'POST'])
 def remoto():

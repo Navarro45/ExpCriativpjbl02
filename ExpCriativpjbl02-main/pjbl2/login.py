@@ -12,7 +12,8 @@ def register_user():
 
 @login.route('/add_user', methods=['GET','POST'])
 def add_user():
-    global users
+    global user_name
+    global user_password
     if request.method == 'POST':
         user = request.form['user']
         password = request.form['password']
@@ -24,15 +25,16 @@ def add_user():
         user_name.append(user)
         user_password.append(password)
         
-    return render_template("users.html", devices=users)
+    return render_template("users.html", devices=user_name)
 
 @login.route('/remove_user')
 def remove_user():
-    return render_template("remove_user.html",devices=users)
+    return render_template("remove_user.html",devices=user_name)
 
 @login.route('/del_user', methods=['GET','POST'])
 def del_user():
-    global users
+    global user_name
+    global user_password
     if request.method == 'POST':
         print(request.form)
         user = request.form['user']
@@ -48,4 +50,4 @@ def del_user():
                 user_name.pop(i)
                 user_password.pop(i)
             i += 1
-    return render_template("users.html", devices=users)
+    return render_template("users.html", devices=user_name)
