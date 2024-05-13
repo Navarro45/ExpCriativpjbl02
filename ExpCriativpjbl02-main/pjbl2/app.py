@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for ,request
+from flask import Flask, render_template, redirect, url_for ,request, jsonify
+from flask_mqtt import Mqtt
 from login import login
 import flask_login
 import models.user
@@ -136,13 +137,11 @@ def handle_message(client, userdata, message):
       alerta = "Nivel de Fumaça Alto"
   else:
     alerta = ""
-    
-  
+
 @mqtt_client.on_disconnect()
 def handle_disconnect():
   print("Desconectado do Broker!")
-     
- 
+
 # Função para a Central de Monitoramento     
 @app.route('/central')
 def central():
