@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for ,request, jsonify
+from flask import Flask, render_template, redirect, url_for ,request, json
 from flask_mqtt import Mqtt
 from login import login
 import flask_login
@@ -75,30 +75,6 @@ MQTT_TOPIC_SEND = "Receber.topic"
 mqtt_client = Mqtt()
 mqtt_client.init_app(app)
 
-@app.route('/')
-def index():
-  return render_template("index.html", is_authenticated=is_authenticated, is_admin=is_admin)
-
-@app.route('/sobre')
-def sobre():
-  return render_template("sobre.html", is_authenticated=is_authenticated,  is_admin=is_admin)
-
-@app.route('/usuarios')
-def usuarios():
-  if is_admin():
-    return render_template("users.html", users=users)
-  else:
-    return redirect('/')
-
-@app.route('/sensores')
-def sensors():
-  return render_template("sensores.html", sensors=sensores, is_authenticated=is_authenticated,  is_admin=is_admin)
-
-@app.route('/atuadores')
-def actuators():
-  print(atuadores)
-  return render_template("atuadores.html", atuadores=atuadores, is_authenticated=is_authenticated,  is_admin=is_admin)
-
 # Funções MQTT
 @mqtt_client.on_connect()
 def handle_connect(client, userdata, flags, rc):
@@ -146,14 +122,14 @@ def handle_disconnect():
 @app.route('/central')
 def central():
   global temperatura, umidade, fumaca
-  return render_template("central.html", temperatura=temperatura, umidade=umidade, fumaca=fumaca, is_authenticated=is_authenticated, is_admin=is_admin)
+  return render_template("central.html", temperatura=temperatura, umidade=umidade, fumaca=fumaca)
 
 @app.route('/controle', methods=['GET', 'POST'])
 def remoto():
   if request.method == 'POST':
     mensagem = request.form['texto']
     mqtt_client.publish(mensagem, mensagem)
-  return render_template("comando_remoto.html", is_authenticated=is_authenticated, is_admin=is_admin)
+  return render_template("comando_remoto.html")
 
 @app.route('/home')
 def home():
