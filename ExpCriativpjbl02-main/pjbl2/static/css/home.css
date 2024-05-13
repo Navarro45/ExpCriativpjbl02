@@ -46,13 +46,19 @@ input{
 
 :root{
     --text: rgb(237, 224, 226);
-    --background: rgb(13, 8, 9);
+    --background: #4f4f4f ;
     --primary: rgb(200, 161, 169);
     --secondary: rgb(110, 82, 65);
     --accent: rgb(174, 153, 118);
 }
 
 .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    align-self: flex-start;
+    justify-content: space-evenly;
     margin-top: 50px;
     padding-top: 50px;
     
