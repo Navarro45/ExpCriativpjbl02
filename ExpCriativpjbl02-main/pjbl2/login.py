@@ -38,14 +38,14 @@ def del_user():
     if request.method == 'POST':
         print(request.form)
         user = request.form['user']
-        for i in user_name:
+        i = 0
+        for i in range(len(user_name)):
             if user == user_name[i]:
                 user_name.pop(i)
                 user_password.pop(i)
-            i += 1
     else:
         user = request.args.get('user', None)
-        for i in user_name:
+        for i in range(len(user_name)):
             if user == user_name[i]:
                 user_name.pop(i)
                 user_password.pop(i)

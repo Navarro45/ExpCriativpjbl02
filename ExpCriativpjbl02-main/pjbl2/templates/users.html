@@ -22,10 +22,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for key, value in devices.items() %}
+                        {% for key in devices %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ value }}</td>
                             <td><a href="http://localhost:8080/del_user?user={{key}}">Deletar</a></td>
                         </tr>
                         {% endfor %}
