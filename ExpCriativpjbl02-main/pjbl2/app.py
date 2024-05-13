@@ -119,9 +119,20 @@ def remoto():
     mqtt_client.publish(mensagem, mensagem)
   return render_template("comando_remoto.html")
 
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
+
+@app.route('/admhome')
+def admhome():
+   return render_template("adm_home.html")
 @app.route('/home')
 def home():
     return render_template("home.html")
+
+@app.route('/logout')
+def logout():
+    return render_template("login.html")
 
 @app.route('/sensors')
 def sensors():
@@ -130,6 +141,10 @@ def sensors():
 @app.route('/actuators')
 def actuators():
     return render_template("actuators.html", atuadores=atuadores_)
+
+@app.route('/userss')
+def userss():
+   return render_template("users.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
