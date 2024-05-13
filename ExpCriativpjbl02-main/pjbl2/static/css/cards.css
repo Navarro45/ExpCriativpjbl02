@@ -25,6 +25,7 @@
     border-radius: 10px;
     overflow: hidden;
     outline: 2px solid white;
+    text-align: center;
 }
 
 .blob {
@@ -35,7 +36,7 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: #ff0000;
+    background-color: #3365E3;          
     opacity: 1;
     filter: blur(12px);
     animation: blob-bounce 5s infinite ease;
