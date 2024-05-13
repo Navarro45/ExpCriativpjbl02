@@ -1,10 +1,9 @@
 from flask import Blueprint, request, render_template, redirect, url_for
-
+import models
+import models.user
 login = Blueprint("login",__name__, template_folder="templates")
 
-user_name = []
-user_password = []
-
+users = models.user.get_users()
 
 @login.route('/register_user')
 def register_user():
@@ -12,42 +11,28 @@ def register_user():
 
 @login.route('/add_user', methods=['GET','POST'])
 def add_user():
-    global user_name
-    global user_password
     if request.method == 'POST':
         user = request.form['user']
         password = request.form['password']
-        user_name.append(user)
-        user_password.append(password)
+        models.user.add_user(user,password)
     else:
         user = request.args.get('user', None)
         password = request.args.get('password', None)
-        user_name.append(user)
-        user_password.append(password)
+        models.user.add_user(user,password)
         
-    return render_template("users.html", devices=user_name)
+    return render_template("users.html", devices=users)
 
 @login.route('/remove_user')
 def remove_user():
-    return render_template("remove_user.html",devices=user_name)
+    return render_template("remove_user.html",devices=users)
 
 @login.route('/del_user', methods=['GET','POST'])
 def del_user():
-    global user_name
-    global user_password
     if request.method == 'POST':
         print(request.form)
         user = request.form['user']
-        i = 0
-        for i in range(len(user_name)):
-            if user == user_name[i]:
-                user_name.pop(i)
-                user_password.pop(i)
+        models.user.remove_user(user)
     else:
         user = request.args.get('user', None)
-        for i in range(len(user_name)):
-            if user == user_name[i]:
-                user_name.pop(i)
-                user_password.pop(i)
-            i += 1
-    return render_template("users.html", devices=user_name)
+        models.user.remove_user(user)
+    return render_template("users.html", devices=users)

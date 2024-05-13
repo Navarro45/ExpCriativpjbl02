@@ -22,9 +22,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for key in devices %}
+                        {% for key, value in devices %}
                         <tr>
                             <td>{{ key }}</td>
+                            <td>{{ value }}</td>
                             <td><a href="http://localhost:8080/del_user?user={{key}}">Deletar</a></td>
                         </tr>
                         {% endfor %}
@@ -34,7 +35,7 @@
                     <p><input type= "submit" value= "Adicionar Usuário"/></p>
                 </form>
                 {% else %}
-                <p>Ainda não usuários registrados!<p>
+                <p>Ainda não há usuários registrados!<p>
                 <form action= "http://localhost:8080/register_user">
                     <p><input type= "submit" value= "Adicionar Usuário"/></p>
                 </form>
