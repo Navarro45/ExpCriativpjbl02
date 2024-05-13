@@ -51,6 +51,111 @@ def request_loader(request):
     user_.id = user
     return user_
 
+
+
+temperatura = 0
+umidade = 0
+fumaca = 0
+alerta = ''
+
+# Configuração MQTT
+app.config['MQTT_BROKER_URL'] = 'www.mqtt-dashboard.com'
+app.config['MQTT_USERNAME'] = 'user' 
+app.config['MQTT_PASSWORD'] = '123456'
+app.config['MQTT_KEEPALIVE'] = 60 
+app.config['MQTT_TLS_ENABLED'] = False
+
+# Definição dos tópicos
+MQTT_TOPIC_TEMPERATURE = "Temperatura.topic"
+MQTT_TOPIC_HUMIDITY = "Umidade.topic"
+MQTT_TOPIC_FUMACA = "Fumaca.topic"
+MQTT_TOPIC_SEND = "Receber.topic"
+
+mqtt_client = Mqtt()
+mqtt_client.init_app(app)
+
+@app.route('/')
+def index():
+  return render_template("index.html", is_authenticated=is_authenticated, is_admin=is_admin)
+
+@app.route('/sobre')
+def sobre():
+  return render_template("sobre.html", is_authenticated=is_authenticated,  is_admin=is_admin)
+
+@app.route('/usuarios')
+def usuarios():
+  if is_admin():
+    return render_template("users.html", users=users)
+  else:
+    return redirect('/')
+
+@app.route('/sensores')
+def sensors():
+  return render_template("sensores.html", sensors=sensores, is_authenticated=is_authenticated,  is_admin=is_admin)
+
+@app.route('/atuadores')
+def actuators():
+  print(atuadores)
+  return render_template("atuadores.html", atuadores=atuadores, is_authenticated=is_authenticated,  is_admin=is_admin)
+
+# Funções MQTT
+@mqtt_client.on_connect()
+def handle_connect(client, userdata, flags, rc):
+  if rc == 0:
+    mqtt_client.subscribe(MQTT_TOPIC_TEMPERATURE)
+    mqtt_client.subscribe(MQTT_TOPIC_HUMIDITY)
+    mqtt_client.subscribe(MQTT_TOPIC_FUMACA)
+    print("Conectado!")
+
+@mqtt_client.on_message()
+def handle_message(client, userdata, message):
+  global temperatura, umidade, alerta, fumaca
+  topic = message.topic
+  content = json.loads(message.payload.decode())
+  if topic == MQTT_TOPIC_TEMPERATURE:
+    temperatura = int(content)
+    if temperatura > 35:
+      alerta = "Alerta! Temperatura muito alta"
+      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
+    else:
+      alerta = ""
+  if topic == MQTT_TOPIC_HUMIDITY:
+    umidade = int(content)
+    if umidade < 25:
+      alerta = "Alerta! Umidade muito baixa"
+      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
+    else:
+      alerta = ""
+  if topic == MQTT_TOPIC_FUMACA:
+    fumaca = float(content)
+    if 0 < fumaca < 100:
+      alerta = "Nivel de Fumaça Baixo"
+    elif 100 < fumaca < 700:
+      alerta = "Nivel de Fumaça Médio"
+    else:
+      alerta = "Nivel de Fumaça Alto"
+  else:
+    alerta = ""
+    
+  
+@mqtt_client.on_disconnect()
+def handle_disconnect():
+  print("Desconectado do Broker!")
+     
+ 
+# Função para a Central de Monitoramento     
+@app.route('/central')
+def central():
+  global temperatura, umidade, fumaca
+  return render_template("central.html", temperatura=temperatura, umidade=umidade, fumaca=fumaca, is_authenticated=is_authenticated, is_admin=is_admin)
+
+@app.route('/controle', methods=['GET', 'POST'])
+def remoto():
+  if request.method == 'POST':
+    mensagem = request.form['texto']
+    mqtt_client.publish(mensagem, mensagem)
+  return render_template("comando_remoto.html", is_authenticated=is_authenticated, is_admin=is_admin)
+
 @app.route('/home')
 def home():
     return render_template("home.html")
