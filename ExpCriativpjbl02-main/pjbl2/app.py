@@ -48,23 +48,21 @@ def request_loader(request):
     user_.id = user
     return user_
 
-
-
 temperatura = 0
 umidade = 0
 alerta = ''
 
 # Configuração MQTT
 app.config['MQTT_BROKER_URL'] = 'www.mqtt-dashboard.com'
-app.config['MQTT_USERNAME'] = 'user' 
-app.config['MQTT_PASSWORD'] = '123456'
+app.config['MQTT_USERNAME'] = 'gp07' 
+app.config['MQTT_PASSWORD'] = '123123'
 app.config['MQTT_KEEPALIVE'] = 60 
 app.config['MQTT_TLS_ENABLED'] = False
 
 # Definição dos tópicos
-MQTT_TOPIC_TEMPERATURE = "Temperatura.topic"
-MQTT_TOPIC_HUMIDITY = "Umidade.topic"
-MQTT_TOPIC_SEND = "Receber.topic"
+MQTT_TOPIC_TEMPERATURE = "expcriativatemperatura"
+MQTT_TOPIC_HUMIDITY = "expcriativahumidade"
+MQTT_TOPIC_SEND = "expcriativaenviar"
 
 mqtt_client = Mqtt()
 mqtt_client.init_app(app)
