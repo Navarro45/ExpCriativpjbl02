@@ -8,7 +8,6 @@ from sensor import sensor
 import models.sensor
 import models.actuator
 from actuator import actuator
-
 app = Flask(__name__)
 
 app.register_blueprint(login, url_prefix='/')
