@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="static/css/home.css">
 </head>
 <body>
+    {%extends "base.html"%}
+    {% block content %}
     <div class="container">
         <div class="sensor-info">
             <h2>Temperature</h2>
@@ -15,5 +17,6 @@
             <p>{{umidade}}</p>
         </div>
     </div>
+    {% endblock %}
 </body>
 </html>
