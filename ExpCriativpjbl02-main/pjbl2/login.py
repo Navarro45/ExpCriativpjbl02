@@ -2,10 +2,8 @@ from flask import Blueprint, request, render_template, redirect, url_for
 
 login = Blueprint("login",__name__, template_folder="templates")
 
-users = {
-"user1":"1234",
-"user2":"12345"
-}
+users = []
+
 
 @login.route('/register_user')
 def register_user():

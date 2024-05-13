@@ -9,7 +9,8 @@ import models.sensor
 import models.actuator
 from actuator import actuator
 
-atuadores = {'Servo': 122, 'Lâmpada': 1}
+sensores = []
+atuadores = []
 
 app = Flask(__name__)
 
