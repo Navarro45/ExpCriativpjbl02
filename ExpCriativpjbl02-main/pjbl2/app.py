@@ -82,16 +82,26 @@ def handle_message(client, userdata, message):
   topic = message.topic
   content = json.loads(message.payload.decode())
   if topic == MQTT_TOPIC_TEMPERATURE:
-    temperatura = int(content)
+    print(content)
+    for i in content:
+      if content[i] == str:
+          content.pop(i)
+    temperatura = int(content['temperature'])
     if temperatura > 35:
       alerta = "Alerta! Temperatura muito alta"
+      float(temperatura)
       mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
     else:
       alerta = ""
   if topic == MQTT_TOPIC_HUMIDITY:
-    umidade = int(content)
+    print(content)
+    for i in content:
+      if content[i] == str:
+          content.pop(i)
+    umidade = int(content['humidity'])
     if umidade < 25:
       alerta = "Alerta! Umidade muito baixa"
+      float(umidade)
       mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
     else:
       alerta = ""
