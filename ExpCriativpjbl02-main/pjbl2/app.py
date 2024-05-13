@@ -122,7 +122,7 @@ def sobre():
 
 @app.route('/admhome')
 def admhome():
-   return render_template("adm_home.html")
+    return render_template("adm_home.html")
 @app.route('/home')
 def home():
     return render_template("home.html")
@@ -141,7 +141,7 @@ def actuators():
 
 @app.route('/userss')
 def userss():
-   return render_template("users.html")
+    return render_template("users.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
