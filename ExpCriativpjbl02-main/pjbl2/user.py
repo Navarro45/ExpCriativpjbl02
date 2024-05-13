@@ -10,17 +10,15 @@ def validated_user():
         user_id = request.form['user']
         password = request.form['password']
         users = models.user.get_users()
+        adm = models.user.get_adm()
 
-        if user_id in users and users[user_id] == password:
+        if user_id in adm and adm[user_id] == password:
+            return render_template('adm_home.html')
+        elif user_id in users and users[user_id] == password:
             user_ = models.user.User()
             user_.id = user_id
             flask_login.login_user(user_)
-
-            if user_id == "adm" and models.user.first_login_adm:
-                models.user.first_login_adm = False 
-                return render_template('adm_home.html')
-            else:
-                return render_template('home.html')
+            return render_template('base.html')
         else:
             return render_template('login.html')
     else:
