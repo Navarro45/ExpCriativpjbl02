@@ -27,8 +27,7 @@ atuadores_=models.actuator.get_actuators()
 def index():
     return render_template('login.html')
 
-#callback user_loader carrega o usuário
-# carrega usuário da seção
+
 @login_manager.user_loader
 def user_loader(user):
     users = users_
@@ -38,7 +37,7 @@ def user_loader(user):
     user_.id = user
     return user_
 
-# carrega usuário do Flask request
+
 @login_manager.request_loader
 def request_loader(request):
     user = request.form.get('user')
@@ -105,7 +104,6 @@ def handle_message(client, userdata, message):
 def handle_disconnect():
   print("Desconectado do Broker!")
 
-# Função para a Central de Monitoramento     
 @app.route('/central')
 def central():
   global temperatura, umidade

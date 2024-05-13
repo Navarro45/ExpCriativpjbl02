@@ -2,10 +2,11 @@ import models.sensor
 from flask import Blueprint, request, render_template
 
 sensor= Blueprint("sensor",__name__, template_folder="templates")
+sensores = models.sensor.get_sensors()
 
 @sensor.route('/list_sensor')
 def list_sensors():
-    return render_template("sensors.html", devices=models.sensor.get_sensors())
+    return render_template("sensors.html", devices= sensores)
 
 @sensor.route('/register_sensor')
 def register_sensor():
@@ -22,11 +23,11 @@ def add_sensor():
         sensor = request.args.get('sensor', None)
         initial_value = request.args.get('initial_value', None)
         sensores[sensor] = initial_value
-    return render_template("sensors.html", devices=models.sensor.get_sensors())
+    return render_template("sensors.html", devices= sensores)
 
 @sensor.route('/remove_sensor')
 def remove_sensor():
-    return render_template("remove_sensor.html",devices=models.sensor.get_sensors())
+    return render_template("remove_sensor.html",devices= sensores)
 
 @sensor.route('/del_sensor', methods=['GET','POST'])
 def del_sensor():
@@ -37,4 +38,4 @@ def del_sensor():
     else:
         sensor = request.args.get('sensor', None)
         models.sensor.remove_sensor(sensor)
-    return render_template("sensors.html", devices=models.sensor.get_sensors())
+    return render_template("sensors.html", devices= sensores)

@@ -1,6 +1,6 @@
 import flask_login
 
-atuadores = {'T1','T2', 'T3'}
+atuadores = {'Buzzer','Led'}
 
 class Atuador(flask_login.UserMixin):
     pass

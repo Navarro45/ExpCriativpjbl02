@@ -1,6 +1,6 @@
 import flask_login
 
-sensores = {'T1':56, 'T2':25, 'T3':15}
+sensores = {'Temperatura': 0,'Umidade' : 0}
 
 class Sensor(flask_login.UserMixin):
     pass
