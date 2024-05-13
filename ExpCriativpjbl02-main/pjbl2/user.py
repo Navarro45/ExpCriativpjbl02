@@ -17,8 +17,8 @@ def validated_user():
         elif user_id in users and users[user_id] == password:
             user_ = models.user.User()
             user_.id = user_id
-            flask_login.login_user(user_)
-            return render_template('base.html')
+            flask_login.login_user(user_)   
+            return render_template('home.html')
         else:
             return render_template('login.html')
     else:
