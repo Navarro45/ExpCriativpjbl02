@@ -143,6 +143,14 @@ def logout():
 def sensors():
     return render_template("sensors.html",devices=sensors_)
 
+@app.route('/publish')
+def publish():
+   return render_template("publish.html")
+
+@app.route('/centrala')
+def centrala():
+   return render_template("centrala.html")
+
 @app.route('/actuators')
 def actuators():
     return render_template("actuators.html", devices=atuadores_)
