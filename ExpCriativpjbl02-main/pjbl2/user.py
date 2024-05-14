@@ -60,3 +60,23 @@ def del_user():
         user = request.args.get('user', None)
         models.user.remove_user(user)
     return render_template("users.html", devices=users)
+
+@user.route('/edit_user', methods=['GET', 'POST'])
+def edit_user():
+    if request.method == 'GET':
+        user_id = request.args.get('user')
+        users = models.user.get_users()
+        if user_id in users:
+            user_data = {
+                'user': user_id,
+                'password': users[user_id]
+            }
+            return render_template('edit_user.html', user=user_data)
+        else:
+            return "Usuário não encontrado"
+    elif request.method == 'POST':
+        user_id = request.form['user']
+        password = request.form['password']
+        models.user.add_user(user_id, password)
+        users = models.user.get_users()
+        return render_template("users.html", devices=users)

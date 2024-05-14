@@ -159,6 +159,10 @@ def logout():
 def sensors():
     return render_template("sensors.html",devices=sensors_)
 
+@app.route('/sensorsuser')
+def sensorsuser():
+    return render_template("sensorsuser.html",devices=sensors_)
+
 @app.route('/centrala')
 def centrala():
     return render_template("centrala.html")
@@ -166,6 +170,10 @@ def centrala():
 @app.route('/actuators')
 def actuators():
     return render_template("actuators.html", devices=atuadores_)
+
+@app.route('/actuatorsuser')
+def actuatorsuser():
+    return render_template("actuatorsuser.html", devices=atuadores_)
 
 @app.route('/userss')
 def userss():
