@@ -117,12 +117,16 @@ def central():
   global temperatura, umidade
   return render_template("central.html", temperatura=temperatura, umidade=umidade)
 
-@app.route('/controle', methods=['GET', 'POST'])
+@app.route('/controle')
+def controle():
+    return render_template("publish.html")
+
+@app.route('/publish', methods=['GET', 'POST'])
 def remoto():
   if request.method == 'POST':
     mensagem = request.form['texto']
-    mqtt_client.publish(mensagem, mensagem)
-  return render_template("comando_remoto.html")
+    mqtt_client.publish(MQTT_TOPIC_SEND, mensagem)
+  return render_template("publish.html")
 
 @app.route('/sobre')
 def sobre():
@@ -143,13 +147,9 @@ def logout():
 def sensors():
     return render_template("sensors.html",devices=sensors_)
 
-@app.route('/publish')
-def publish():
-   return render_template("publish.html")
-
 @app.route('/centrala')
 def centrala():
-   return render_template("centrala.html")
+    return render_template("centrala.html")
 
 @app.route('/actuators')
 def actuators():
