@@ -117,7 +117,7 @@ def central():
   global temperatura, umidade
   return render_template("central.html", temperatura=temperatura, umidade=umidade)
 
-@app.route('/controle')
+@app.route('/controle', methods=['GET','POST'])
 def controle():
   if request.method == 'POST':
     message_type = request.form['message_type']
@@ -127,7 +127,9 @@ def controle():
     elif message_type == 'buzzer':
         message = request.form['buzzer_frequency'], request.form['buzzer_duty']
         mqtt_client.publish(MQTT_TOPIC_SEND, message)
-  return render_template("centrala.html")
+    return render_template("centrala.html")
+  else:
+    return render_template("centrala.html")
 
 @app.route('/send', methods=['GET','POST'])
 def send():
