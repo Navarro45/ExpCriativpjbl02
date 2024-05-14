@@ -141,15 +141,15 @@ def logout():
 
 @app.route('/sensors')
 def sensors():
-    return render_template("sensors.html",sensores=sensors_)
+    return render_template("sensors.html",devices=sensors_)
 
 @app.route('/actuators')
 def actuators():
-    return render_template("actuators.html", atuadores=atuadores_)
+    return render_template("actuators.html", devices=atuadores_)
 
 @app.route('/userss')
 def userss():
-    return render_template("users.html")
+    return render_template("users.html", devices=users_)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
