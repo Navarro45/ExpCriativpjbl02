@@ -1,3 +1,38 @@
-{%extends "base.html"%}
-{%block content%}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {%extends "base.html"%}
+    {%block content%}
+    <div class="card">
+        <h2>LED</h2>
+        <form action="/controle" method="POST">
+            <input type="hidden" name="message_type" value="led">
+            <button type="submit" name="led_state" value="1">Turn On</button>
+        </form>
+        <form action="/controle" method="POST">
+            <input type="hidden" name="message_type" value="led">
+            <button type="submit" name="led_state" value="0">Turn Off</button>
+        </form>
+    </div>
+    <div class="card">
+        <h2>Buzzer</h2>
+        <form action="/controle" method="POST">
+            <input type="hidden" name="message_type" value="buzzer">
+                <label for="buzzer_frequency">Frequency:</label>
+                <input type="range" id="buzzer_frequency" name="buzzer_frequency" min="100" max="1000" value="500">
+                <br>
+            <label for="buzzer_duty">Duty:</label>
+            <input type="range" id="buzzer_duty" name="buzzer_duty" min="10" max="90" value="50">
+            <br>
+            <button type="submit">Set</button>
+        </form>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

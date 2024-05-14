@@ -119,6 +119,18 @@ def central():
 
 @app.route('/controle')
 def controle():
+  if request.method == 'POST':
+    message_type = request.form['message_type']
+    if message_type == 'led':
+        message = request.form['led_state']
+        mqtt_client.publish(MQTT_TOPIC_SEND, message)
+    elif message_type == 'buzzer':
+        message = request.form['buzzer_frequency'], request.form['buzzer_duty']
+        mqtt_client.publish(MQTT_TOPIC_SEND, message)
+  return render_template("centrala.html")
+
+@app.route('/send', methods=['GET','POST'])
+def send():
     return render_template("publish.html")
 
 @app.route('/publish', methods=['GET', 'POST'])
