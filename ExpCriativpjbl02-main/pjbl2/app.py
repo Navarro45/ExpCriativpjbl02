@@ -83,7 +83,6 @@ def handle_message(client, userdata, message):
   topic = message.topic
   content = json.loads(message.payload.decode())
   if topic == MQTT_TOPIC_TEMPERATURE:
-    print(content)
     for i in content:
       if content[i] == str:
           content.pop(i)
@@ -91,11 +90,10 @@ def handle_message(client, userdata, message):
     if temperatura > 35:
       alerta = "Alerta! Temperatura muito alta"
       float(temperatura)
-      mqtt_client.publish(MQTT_TOPIC_ALERT, alerta)
+      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
     else:
       alerta = ""
   if topic == MQTT_TOPIC_HUMIDITY:
-    print(content)
     for i in content:
       if content[i] == str:
           content.pop(i)
@@ -103,7 +101,7 @@ def handle_message(client, userdata, message):
     if umidade < 25:
       alerta = "Alerta! Umidade muito baixa"
       float(umidade)
-      mqtt_client.publish(MQTT_TOPIC_ALERT, alerta)
+      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
     else:
       alerta = ""
   else:
@@ -124,10 +122,7 @@ def controle():
     message_type = request.form['message_type']
     if message_type == 'led':
         message = request.form['led_state']
-        mqtt_client.publish(MQTT_TOPIC_SEND, message)
-    elif message_type == 'buzzer':
-        message = request.form['buzzer_frequency'], request.form['buzzer_duty']
-        mqtt_client.publish(MQTT_TOPIC_SEND, message)
+        mqtt_client.publish(MQTT_TOPIC_ALERT, message)
     return render_template("centrala.html")
   else:
     return render_template("centrala.html")
