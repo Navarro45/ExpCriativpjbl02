@@ -90,7 +90,7 @@ def handle_message(client, userdata, message):
     if temperatura > 35:
       alerta = "Alerta! Temperatura muito alta"
       float(temperatura)
-      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
+      mqtt_client.publish(MQTT_TOPIC_ALERT, alerta)
     else:
       alerta = ""
   if topic == MQTT_TOPIC_HUMIDITY:
@@ -101,7 +101,7 @@ def handle_message(client, userdata, message):
     if umidade < 25:
       alerta = "Alerta! Umidade muito baixa"
       float(umidade)
-      mqtt_client.publish(MQTT_TOPIC_SEND, alerta)
+      mqtt_client.publish(MQTT_TOPIC_ALERT, alerta)
     else:
       alerta = ""
   else:
